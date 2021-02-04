@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:gauge="clr-namespace:Syncfusion.SfGauge.XForms;assembly=Syncfusion.SfGauge.XForms"
+             xmlns:rion="clr-namespace:Rion.ViewModels;assembly=Rion"
+             x:Class="Rion.PortraitContent"
+             ios:Page.UseSafeArea="True"
+             Padding="15, 0, 15, 15"
+             BackgroundColor="black">
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="settings-iOs-sm.png"
+                     Clicked="Settings_OnClicked"
+                     />
+    </ContentPage.ToolbarItems>-->
+    <ContentView.Content>
+                
+                <Grid RowSpacing="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="9*"/>
+                        <RowDefinition Height="4.25*"/>
+                        <RowDefinition Height="2.75*"/>
+                        <RowDefinition Height=".5*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           MinimumWidthRequest="175"
+                           Margin="0, 10, 0, 0"
+                           WidthRequest="175"
+                           VerticalOptions="CenterAndExpand"
+                           Aspect="AspectFill"
+                           HorizontalOptions="Center"
+                           Source="rion.png"/>
+                    <gauge:SfCircularGauge Grid.Row="1"
+                                           CircularCoefficient="1"
+                                           VerticalOptions="Center"
+                                           Margin="0, 0, 0, 0"
+                                           HorizontalOptions="CenterAndExpand"
+                                           MinimumHeightRequest="300"
+                                           HeightRequest="300"
+                                           IsCenterAligned="True"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="2">
+                        <gauge:SfCircularGauge.Headers>
+                    <gauge:Header Text="mph"
+                                  FontAttributes="Bold"
+                                  Position="0.5,0.58"
+                                  TextSize="14"
+                                  ForegroundColor="#cfb53b" />
+                    <gauge:Header
+                                  Text="{Binding Model.Speed, StringFormat='{0:F0}'}"
+                                  Position="0.5,0.43"
+                                  TextSize="66"
+                                  FontAttributes="Bold"
+                                  ForegroundColor="White" />
+                </gauge:SfCircularGauge.Headers>
+                <gauge:SfCircularGauge.Scales>
+                    <gauge:Scale RimThickness="1"
+                                 ShowLabels="False"
+                                 StartAngle="165"
+                                 SweepAngle="210"
+                                 ShowTicks="False"
+                                 RimColor="White"
+                                 ShowRim="False"
+                                 RadiusFactor=".57"/>
+                    <gauge:Scale EndValue="100"
+                                 MaximumLabels="1"
+                                 StartAngle="160"
+                                 SweepAngle="220"
+                                 RadiusFactor=".95"
+                                 LabelFontSize="14"
+                                 ShowRim="False"
+                                 MinorTicksPerInterval="9"
+                                 FontAttributes="Bold"
+                                 LabelColor="White"
+                                 Interval="10"
+                                 LabelOffset="0.74">
+                        <gauge:Scale.MajorTickSettings>
+                            <gauge:TickSettings Color="White"
+                                                Thickness="3.5"
+                                                Length="13"
+                                                Offset=".89"/>
+                        </gauge:Scale.MajorTickSettings>
+                        <gauge:Scale.MinorTickSettings>
+                            <gauge:TickSettings Color="#cfb53b"
+                                                Thickness="2.5"
+                                                Length="7"
+                                                Offset=".86" />
+                        </gauge:Scale.MinorTickSettings>
+                        
+                        <gauge:Scale.Pointers>
+                            <gauge:RangePointer Color="#ffa500"
+                                                Thickness="8"
+                                                RangeCap="Both"
+                                                Offset=".99"
+                                                AnimationDuration=".3"
+                                                Value="{Binding Model.Speed}"
+                                                />
+                        </gauge:Scale.Pointers>
+                        <gauge:Scale.Ranges>
+                            <gauge:Range StartValue="8"
+                                         EndValue="50"
+                                         InnerStartOffset="0.55"
+                                         InnerEndOffset="0.55"
+                                         OuterStartOffset="0.551"
+                                         OuterEndOffset="0.565"/>
+                            <gauge:Range StartValue="50"
+                                         EndValue="92"
+                                         InnerStartOffset="0.55"
+                                         InnerEndOffset="0.55"
+                                         OuterStartOffset="0.565"
+                                         OuterEndOffset="0.551"/>
+                        </gauge:Scale.Ranges>
+                    </gauge:Scale>
+                </gauge:SfCircularGauge.Scales>
+            </gauge:SfCircularGauge>
+                    
+                    <gauge:SfCircularGauge Grid.Row="2"
+                                           Grid.Column="0"
+                                           HeightRequest="275"
+                                           MinimumHeightRequest="275"
+                                           VerticalOptions="Center"
+                                           IsCenterAligned="True"
+                                           CircularCoefficient=".9">
+                        <gauge:SfCircularGauge.Headers>
+                    <gauge:Header Text="A"
+                                  FontAttributes="Bold"
+                                  Position="0.5,0.57"
+                                  TextSize="12"
+                                  ForegroundColor="#cfb53b" />
+                    <gauge:Header 
+                                  Text="{Binding Model.Amps, StringFormat='{0:F0}'}"
+                                  Position="0.5,0.46"
+                                  TextSize="22"
+                                  FontAttributes="Bold"
+                                  ForegroundColor="White" />
+                </gauge:SfCircularGauge.Headers>
+                    <gauge:SfCircularGauge.Scales>
+                        <gauge:Scale RimThickness="1"
+                                     ShowLabels="False"
+                                     StartAngle="165"
+                                     SweepAngle="210"
+                                     ShowTicks="False"
+                                     ShowRim="False"
+                                     RadiusFactor=".55"/>
+                        <gauge:Scale EndValue="1000"
+                                     MaximumLabels="1"
+                                     RadiusFactor=".95"
+                                     LabelFontSize="11"
+                                     ShowRim="False"
+                                     StartAngle="160"
+                                     SweepAngle="220"
+                                     MinorTicksPerInterval="10"
+                                     FontAttributes="Bold"
+                                     LabelColor="White"
+                                     Interval="200"
+                                     LabelOffset="0.63">
+                            <gauge:Scale.MajorTickSettings>
+                                <gauge:TickSettings Color="White"
+                                                    Thickness="3"
+                                                    Length="10"
+                                                    Offset=".89"/>
+                            </gauge:Scale.MajorTickSettings>
+                            <gauge:Scale.MinorTickSettings>
+                                <gauge:TickSettings Color="#cfb53b"
+                                                    Thickness="2.5"
+                                                    Length="5"
+                                                    Offset=".84" />
+                            </gauge:Scale.MinorTickSettings>
+                        
+                        <gauge:Scale.Pointers>
+                            <gauge:RangePointer Color="#ffa500"
+                                                Thickness="5"
+                                                RangeCap="Both"
+                                                Offset="1"
+                                                AnimationDuration=".3"
+                                                Value="{Binding Model.Amps}"
+                                                
+                            />
+                        </gauge:Scale.Pointers>
+                            <gauge:Scale.Ranges>
+                                <gauge:Range StartValue="60"
+                                             EndValue="500"
+                                             InnerStartOffset="0.40"
+                                             InnerEndOffset="0.40"
+                                             OuterStartOffset="0.401"
+                                             OuterEndOffset="0.415"/>
+                                <gauge:Range StartValue="500"
+                                             EndValue="940"
+                                             InnerStartOffset="0.40"
+                                             InnerEndOffset="0.40"
+                                             OuterStartOffset="0.415"
+                                             OuterEndOffset="0.401"/>
+                            </gauge:Scale.Ranges>
+                    </gauge:Scale>
+                </gauge:SfCircularGauge.Scales>
+            </gauge:SfCircularGauge>
+                    <gauge:SfCircularGauge Grid.Row="2"
+                                           Grid.Column="1"
+                                           IsCenterAligned="True"
+                                           CircularCoefficient=".9">
+                        <gauge:SfCircularGauge.Headers>
+                    <gauge:Header Text="°F"
+                                  FontAttributes="Bold"
+                                  Position="0.5,0.57"
+                                  TextSize="12"
+                                  ForegroundColor="#cfb53b" />
+                    <gauge:Header 
+                                  Text="{Binding Model.Temp, StringFormat='{0:00.0}'}"
+                                  Position="0.5,0.46"
+                                  TextSize="20"
+                                  FontAttributes="Bold"
+                                  ForegroundColor="White" />
+                </gauge:SfCircularGauge.Headers>
+                    <gauge:SfCircularGauge.Scales>
+                        <gauge:Scale RimThickness="1"
+                                     ShowLabels="False"
+                                     StartAngle="165"
+                                     SweepAngle="210"
+                                     ShowTicks="False"
+                                     ShowRim="False"
+                                     RadiusFactor=".55"/>
+                        <gauge:Scale EndValue="100"
+                                     MaximumLabels="1"
+                                     RadiusFactor=".95"
+                                     LabelFontSize="11"
+                                     ShowRim="False"
+                                     StartAngle="160"
+                                     SweepAngle="220"
+                                     MinorTicksPerInterval="10"
+                                     FontAttributes="Bold"
+                                     LabelColor="White"
+                                     Interval="20"
+                                     LabelOffset="0.65">
+                            <gauge:Scale.MajorTickSettings>
+                                <gauge:TickSettings Color="White"
+                                                    Thickness="3"
+                                                    Length="10"
+                                                    Offset=".89"/>
+                            </gauge:Scale.MajorTickSettings>
+                            <gauge:Scale.MinorTickSettings>
+                                <gauge:TickSettings Color="#cfb53b"
+                                                    Thickness="2.5"
+                                                    Length="5"
+                                                    Offset=".84" />
+                            </gauge:Scale.MinorTickSettings>
+                        
+                        <gauge:Scale.Pointers>
+                            <gauge:RangePointer Color="#ffa500"
+                                                Thickness="5"
+                                                RangeCap="Both"
+                                                Offset="1"
+                                                AnimationDuration=".3"
+                                                Value="{Binding Model.Temp}" />
+                        </gauge:Scale.Pointers>
+                        <gauge:Scale.Ranges>
+                            <gauge:Range StartValue="8"
+                                         EndValue="50"
+                                         InnerStartOffset="0.40"
+                                         InnerEndOffset="0.40"
+                                         OuterStartOffset="0.401"
+                                         OuterEndOffset="0.415"/>
+                            <gauge:Range StartValue="50"
+                                         EndValue="92"
+                                         InnerStartOffset="0.40"
+                                         InnerEndOffset="0.40"
+                                         OuterStartOffset="0.415"
+                                         OuterEndOffset="0.401"/>
+                        </gauge:Scale.Ranges>
+                    </gauge:Scale>
+                </gauge:SfCircularGauge.Scales>
+            </gauge:SfCircularGauge>
+                    <gauge:SfLinearGauge Grid.Row="3"
+                                 Grid.Column="0"
+                                 Grid.ColumnSpan="2">
+                        <gauge:SfLinearGauge.Annotations>
+                    <!--<gauge:LinearGaugeAnnotation OffsetX = "0.75" OffsetY =".8" ScaleIndex = "0"
+                    ScaleValue="{Binding Voltage}">
+                        <gauge:LinearGaugeAnnotation.View>
+                            <Label Text="150 °F" TextColor="White" FontSize ="14"/>
+                        </gauge:LinearGaugeAnnotation.View>
+                    </gauge:LinearGaugeAnnotation>-->
+                    <gauge:LinearGaugeAnnotation ScaleValue="{Binding Model.Voltage}"
+                                                 ViewMargin="-32,-15">
+                    <gauge:LinearGaugeAnnotation.View>
+                        <Label 
+                               Text="{Binding Model.Voltage, StringFormat='{0:00.0}'}"
+                               TextColor="Black"
+                               FontAttributes="Bold"
+                               FontSize="20"/>
+                    </gauge:LinearGaugeAnnotation.View>
+                    </gauge:LinearGaugeAnnotation>
+                </gauge:SfLinearGauge.Annotations>
+                
+                <gauge:SfLinearGauge.Scales>
+                    <gauge:LinearScale ScaleBarColor="DimGray"
+                                       CornerRadiusType="Both"
+                                       CornerRadius="25"
+                                       ShowTicks="False"
+                                       ShowLabels="False"
+                                       ScaleBarLength="175"
+                                       ScaleBarSize="30"
+                                       MinimumValue="0"
+                                       MaximumValue="100"
+                                       FontAttributes="Bold"
+                                       LabelColor="White"
+                                       LabelFontSize="12"
+                                       Interval="100"
+                                       LabelOffset="-15"
+                                       >
+                        <gauge:LinearScale.Pointers>
+                            <gauge:BarPointer CornerRadiusType="Both"
+                                              CornerRadius="25"
+                                              Thickness="30"
+                                              AnimationDuration=".8"
+                                              Value="{Binding Model.Voltage}">
+                                <gauge:BarPointer.GradientStops>
+                                    <gauge:GaugeGradientStop Value="10" Color="#DC4C2C"/>
+                                    <gauge:GaugeGradientStop Value="40" Color="#E4AC1E"/>
+                                    <gauge:GaugeGradientStop Value="65" Color="#91D40F"/>
+                                    <gauge:GaugeGradientStop Value="80" Color="#00BF22"/>
+                                </gauge:BarPointer.GradientStops>
+                                
+                            </gauge:BarPointer>
+                        </gauge:LinearScale.Pointers>
+                        
+                    </gauge:LinearScale>
+                </gauge:SfLinearGauge.Scales>
+                    </gauge:SfLinearGauge>
+                    <!--<Label x:Name="VoltageLabel"
+                           Grid.Row="3"
+                           Grid.ColumnSpan="2"
+                           TextColor="#cfb53b"
+                           FontSize="40"
+                           FontAttributes="Bold"
+                           FontFamily=""
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Grid.Column="0" />-->
+                    <Label Grid.Column="0"
+                           Grid.Row="4"
+                           Text="Connected Device: "
+                           TextColor="white"
+                           HorizontalOptions="EndAndExpand"
+                           VerticalOptions="Center"
+                           FontSize="11"/>
+                    <Label
+                           Text="{Binding ConnectedDeviceLabel.LabelText}"
+                           FontSize="12"
+                           Grid.Row="4"
+                           TextColor="white"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="Center"
+                           Grid.Column="1"/>
+                    <Button Grid.Row="5"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            FontSize="16"
+                            TextColor="White"
+                            Text="Connect"
+                            IsEnabled="{Binding ConnectButton.IsEnabled}"
+                            Command="{Binding ConnectDeviceCommand}"
+                            />
+                </Grid>
+    </ContentView.Content>
+</ContentView>

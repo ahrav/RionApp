@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Rion.ListOfDevices"
+             Title="Choose a Device">
+    <Grid>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListView x:Name="MyListView" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                  ItemTapped="Handle_ItemTapped"
+                  SelectionMode="Single"
+                  CachingStrategy="RecycleElement"
+                  Refreshing="MyListView_OnRefreshing"
+                  IsPullToRefreshEnabled="True">
+
+            <!--Built in Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" Detail="{Binding Guid}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+        
+        <Button x:Name="ScanButton" Grid.Column="0" Grid.Row="1" 
+                Text="Scan" 
+                Clicked="ScanButton_OnClicked" />
+
+        <Button x:Name="StopScanButton" Grid.Column="1" Grid.Row="1" 
+                Text="Stop Scan" 
+                Clicked="StopScanButton_OnClicked" />
+
+    </Grid>
+</ContentPage>

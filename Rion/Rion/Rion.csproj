@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>pdbonly</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BACCommunicationAPI" Version="2.2.6-alpha" />
+        <PackageReference Include="Syncfusion.Licensing" Version="18.4.0.39" />
+        <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="18.4.0.39" />
+        <PackageReference Include="Syncfusion.Xamarin.Core" Version="18.4.0.39" />
+        <PackageReference Include="Syncfusion.Xamarin.SfGauge" Version="18.4.0.39" />
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.1931" />
+    </ItemGroup>
+</Project>
