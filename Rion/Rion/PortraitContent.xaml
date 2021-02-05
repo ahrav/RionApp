@@ -281,20 +281,14 @@
                                  Grid.Column="0"
                                  Grid.ColumnSpan="2">
                         <gauge:SfLinearGauge.Annotations>
-                    <!--<gauge:LinearGaugeAnnotation OffsetX = "0.75" OffsetY =".8" ScaleIndex = "0"
-                    ScaleValue="{Binding Voltage}">
-                        <gauge:LinearGaugeAnnotation.View>
-                            <Label Text="150 °F" TextColor="White" FontSize ="14"/>
-                        </gauge:LinearGaugeAnnotation.View>
-                    </gauge:LinearGaugeAnnotation>-->
-                    <gauge:LinearGaugeAnnotation ScaleValue="{Binding Model.Voltage}"
-                                                 ViewMargin="-32,-15">
+                            <gauge:LinearGaugeAnnotation ScaleValue="{Binding Model.Voltage}"
+                                                         ViewMargin="-17,-15">
                     <gauge:LinearGaugeAnnotation.View>
                         <Label 
-                               Text="{Binding Model.Voltage, StringFormat='{0:00.0}'}"
+                               Text="{Binding VoltageLabel.LabelText}"
                                TextColor="Black"
                                FontAttributes="Bold"
-                               FontSize="20"/>
+                               FontSize="22"/>
                     </gauge:LinearGaugeAnnotation.View>
                     </gauge:LinearGaugeAnnotation>
                 </gauge:SfLinearGauge.Annotations>
@@ -307,12 +301,12 @@
                                        ShowLabels="False"
                                        ScaleBarLength="175"
                                        ScaleBarSize="30"
-                                       MinimumValue="0"
-                                       MaximumValue="100"
+                                       MinimumValue="0.0"
+                                       MaximumValue="100.0"
                                        FontAttributes="Bold"
                                        LabelColor="White"
                                        LabelFontSize="12"
-                                       Interval="100"
+                                       Interval="100.0"
                                        LabelOffset="-15"
                                        >
                         <gauge:LinearScale.Pointers>

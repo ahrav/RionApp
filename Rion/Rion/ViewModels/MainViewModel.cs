@@ -12,30 +12,13 @@ namespace Rion.ViewModels
     public class MainViewModel : IDeviceManipulationPage
     {
         private readonly IPageService _pageService;
-        public static ObservableCollection<string> List { get; private set; } = new ObservableCollection<string>();
-        public static IBacGenericDevice ConnectedDevice { get; private set; }
+        private static ObservableCollection<string> List { get; set; } = new ObservableCollection<string>();
+        private static IBacGenericDevice ConnectedDevice { get; set; }
         public ButtonViewModel ConnectButton { get; private set; }
         public LabelViewModel ConnectedDeviceLabel { get; private set; }
+        public LabelViewModel VoltageLabel { get; private set; }
         private const int WheelSize = 11;
         private readonly FeedViewModel _model;
-        public double Voltage
-        {
-            get => Model.Voltage;
-        }
-        public int Speed
-        {
-            get => Model.Speed;
-        }
-
-        public double Amps
-        {
-            get => Model.Amps;
-        }
-
-        public double Temp
-        {
-            get => Model.Temp;
-        }
         public FeedViewModel Model => _model;
         
         public ICommand ConnectDeviceCommand { get; private set; }
@@ -53,7 +36,7 @@ namespace Rion.ViewModels
                 ConnectButton = new ButtonViewModel {IsEnabled = true};
                 ConnectDeviceCommand = new Command(ConnectController);
                 ConnectedDeviceLabel = new LabelViewModel{LabelText = App.LocalDevice != null ? "Rion Thrust": "(Connect Device)"};
-                ConnectDevice();
+                VoltageLabel = new LabelViewModel {LabelText = "00.0"};
                 SetupCommunications();
             }
             HandleConnectionState();
@@ -63,7 +46,6 @@ namespace Rion.ViewModels
         {
             BacCommunication.CurrentRepository.BluetoothLeScanningChange += CurrentRepository_BluetoothLeScanningChange;
             Device.BeginInvokeOnMainThread(handleScanningChange);
-            // HandleConnectionState();
             StartAutoConnectionRoutine();
         }
 
@@ -105,6 +87,7 @@ namespace Rion.ViewModels
             if (ConnectedDevice == null)
             {
                 Model.Voltage = 00.0;
+                VoltageLabel.LabelText = "00.0";
                 return;
             }
 
@@ -112,7 +95,9 @@ namespace Rion.ViewModels
             {
                 try
                 {
-                    Model.Voltage = await ConnectedDevice.Read(265) / (double)32;
+                    Model.Voltage = await ConnectedDevice.Read(265) / (double) 32;
+                    VoltageLabel.LabelText = Model.Voltage.ToString("F0");
+                    Console.WriteLine(VoltageLabel.LabelText);
                 }
                 catch (Exception exception)
                 {
@@ -182,6 +167,7 @@ namespace Rion.ViewModels
             Model.Amps = 0.0;
             Model.Temp = 0.0;
             Model.Voltage = 0.0;
+            VoltageLabel.LabelText = "00.0";
             ConnectedDeviceLabel.LabelText = "(Connect Device)";
             if (ConnectedDevice == null) return;
             ConnectedDevice.ConnectionStateChanged -= Device_ConnectionStateChanged;
@@ -209,7 +195,7 @@ namespace Rion.ViewModels
         private async void StartAutoConnectionRoutine()
         {
             Console.WriteLine("Started auto connect !!");
-            // ConnectDevice();
+            ConnectDevice();
             if (ConnectedDevice != null)
             {
                 await ConnectedDevice.Disconnect();
@@ -281,6 +267,8 @@ namespace Rion.ViewModels
                     ConnectButton.TextColor = Color.LightGray;
                     break;
                 case BACConnectionState.DISCONNECTED:
+                    Console.WriteLine("Disconnected!!!!!");
+                    StartAutoConnectionRoutine();
                     ConnectButton.IsEnabled = true;
                     break;
                 case BACConnectionState.DISCONNECTING:

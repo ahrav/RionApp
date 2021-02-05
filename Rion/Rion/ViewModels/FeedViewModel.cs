@@ -28,7 +28,7 @@ namespace Rion.ViewModels
             get => _voltage;
             set
             {
-                if (Math.Abs(_voltage - value) < 0.01) return;
+                if (Math.Abs(_voltage - value) < (double) 0.01) return;
                 _voltage = value;
                 OnPropertyChanged();
             }

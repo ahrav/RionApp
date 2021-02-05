@@ -291,10 +291,10 @@
                         </gauge:LinearGaugeAnnotation.View>
                     </gauge:LinearGaugeAnnotation>-->
                     <gauge:LinearGaugeAnnotation ScaleValue="{Binding Model.Voltage}"
-                                                 ViewMargin="-32,-13">
+                                                 ViewMargin="-20,-13">
                     <gauge:LinearGaugeAnnotation.View>
                         <Label 
-                            Text="{Binding Model.Voltage, StringFormat='{0:00.0}'}"
+                            Text="{Binding VoltageLabel.LabelText}"
                                TextColor="Black"
                                FontAttributes="Bold"
                                FontSize="20"/>
