@@ -36,7 +36,7 @@ namespace Rion.ViewModels
                 ConnectButton = new ButtonViewModel {IsEnabled = true};
                 ConnectDeviceCommand = new Command(ConnectController);
                 ConnectedDeviceLabel = new LabelViewModel{LabelText = App.LocalDevice != null ? "Rion Thrust": "(Connect Device)"};
-                VoltageLabel = new LabelViewModel {LabelText = "00.0"};
+                VoltageLabel = new LabelViewModel {LabelText = ""};
                 SetupCommunications();
             }
             HandleConnectionState();
@@ -87,7 +87,7 @@ namespace Rion.ViewModels
             if (ConnectedDevice == null)
             {
                 Model.Voltage = 00.0;
-                VoltageLabel.LabelText = "00.0";
+                VoltageLabel.LabelText = "";
                 return;
             }
 
@@ -167,7 +167,7 @@ namespace Rion.ViewModels
             Model.Amps = 0.0;
             Model.Temp = 0.0;
             Model.Voltage = 0.0;
-            VoltageLabel.LabelText = "00.0";
+            VoltageLabel.LabelText = "";
             ConnectedDeviceLabel.LabelText = "(Connect Device)";
             if (ConnectedDevice == null) return;
             ConnectedDevice.ConnectionStateChanged -= Device_ConnectionStateChanged;
