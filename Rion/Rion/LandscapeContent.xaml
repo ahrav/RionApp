@@ -78,7 +78,7 @@
                                  FontAttributes="Bold"
                                  LabelColor="White"
                                  Interval="10"
-                                 LabelOffset="0.74">
+                                 LabelOffset="0.71">
                         <gauge:Scale.MajorTickSettings>
                             <gauge:TickSettings Color="White"
                                                 Thickness="3.5"
@@ -156,7 +156,7 @@
                                      FontAttributes="Bold"
                                      LabelColor="White"
                                      Interval="200"
-                                     LabelOffset="0.63">
+                                     LabelOffset="0.60">
                             <gauge:Scale.MajorTickSettings>
                                 <gauge:TickSettings Color="White"
                                                     Thickness="3"
@@ -224,7 +224,7 @@
                                      ShowTicks="False"
                                      ShowRim="False"
                                      RadiusFactor=".55"/>
-                        <gauge:Scale EndValue="100"
+                        <gauge:Scale EndValue="200"
                                      MaximumLabels="1"
                                      RadiusFactor=".95"
                                      LabelFontSize="11"
@@ -234,8 +234,8 @@
                                      MinorTicksPerInterval="10"
                                      FontAttributes="Bold"
                                      LabelColor="White"
-                                     Interval="20"
-                                     LabelOffset="0.65">
+                                     Interval="40"
+                                     LabelOffset="0.63">
                             <gauge:Scale.MajorTickSettings>
                                 <gauge:TickSettings Color="White"
                                                     Thickness="3"
@@ -265,13 +265,13 @@
                         </gauge:Scale.Pointers>
                         <gauge:Scale.Ranges>
                             <gauge:Range StartValue="8"
-                                         EndValue="50"
+                                         EndValue="100"
                                          InnerStartOffset="0.40"
                                          InnerEndOffset="0.40"
                                          OuterStartOffset="0.401"
                                          OuterEndOffset="0.415"/>
-                            <gauge:Range StartValue="50"
-                                         EndValue="92"
+                            <gauge:Range StartValue="100"
+                                         EndValue="192"
                                          InnerStartOffset="0.40"
                                          InnerEndOffset="0.40"
                                          OuterStartOffset="0.415"

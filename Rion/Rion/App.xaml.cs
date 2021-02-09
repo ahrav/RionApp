@@ -13,7 +13,7 @@ namespace Rion
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new MainPage());
         }
         
         public static IBacGenericDevice LocalDevice { get; set; }

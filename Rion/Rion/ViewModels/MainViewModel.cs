@@ -22,6 +22,8 @@ namespace Rion.ViewModels
         public FeedViewModel Model => _model;
         
         public ICommand ConnectDeviceCommand { get; private set; }
+        
+        public ICommand SwipeComand { get; set; }
 
         public MainViewModel(IPageService pageService)
         {
@@ -29,6 +31,7 @@ namespace Rion.ViewModels
             ConnectedDevice = App.LocalDevice;
             _pageService = pageService;
             _model = new FeedViewModel();
+            SwipeComand = new Command(SwipeSettings);
             
             
             if (App.LocalDevice == null)
@@ -36,10 +39,16 @@ namespace Rion.ViewModels
                 ConnectButton = new ButtonViewModel {IsEnabled = true};
                 ConnectDeviceCommand = new Command(ConnectController);
                 ConnectedDeviceLabel = new LabelViewModel{LabelText = App.LocalDevice != null ? "Rion Thrust": "(Connect Device)"};
-                VoltageLabel = new LabelViewModel {LabelText = ""};
-                SetupCommunications();
+                VoltageLabel = new LabelViewModel {LabelText = "0.0", LabelColor = Color.DimGray};
+                // SetupCommunications();
             }
-            HandleConnectionState();
+            // HandleConnectionState();
+        }
+
+        private async void SwipeSettings()
+        {
+            Console.WriteLine("Swipinggg!!");
+            await _pageService.PushAsync(new ListOfDevices(this));
         }
 
         private void SetupCommunications()
@@ -86,8 +95,9 @@ namespace Rion.ViewModels
         {
             if (ConnectedDevice == null)
             {
-                Model.Voltage = 00.0;
-                VoltageLabel.LabelText = "";
+                Model.Voltage = 0.0;
+                VoltageLabel.LabelText = "0.0";
+                VoltageLabel.LabelColor = Color.DimGray;
                 return;
             }
 
@@ -97,6 +107,7 @@ namespace Rion.ViewModels
                 {
                     Model.Voltage = await ConnectedDevice.Read(265) / (double) 32;
                     VoltageLabel.LabelText = Model.Voltage.ToString("F0");
+                    VoltageLabel.LabelColor = Color.Black;
                     Console.WriteLine(VoltageLabel.LabelText);
                 }
                 catch (Exception exception)
