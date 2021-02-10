@@ -100,6 +100,10 @@
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
             <Visible>false</Visible>
         </ImageAsset>
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon1024.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon152.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon167.png" />
+        <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon120.png" />
     </ItemGroup>
     <ItemGroup>
         <Reference Include="System" />
@@ -120,7 +124,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Rion\Rion.csproj">
-            <Project>{E69010B3-8596-40FB-8FAD-564DDD1369E6}</Project>
+            <Project>{433E053A-4F8E-4C4E-BD97-9E993B8AAF18}</Project>
             <Name>Rion</Name>
         </ProjectReference>
     </ItemGroup>

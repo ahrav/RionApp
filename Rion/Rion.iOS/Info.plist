@@ -26,7 +26,7 @@
     <key>CFBundleIdentifier</key>
     <string>com.rionmotors.application</string>
     <key>CFBundleVersion</key>
-    <string>1.0</string>
+    <string>1.0.1</string>
     <key>UILaunchStoryboardName</key>
     <string>LaunchScreen</string>
     <key>CFBundleName</key>
@@ -35,6 +35,24 @@
     <string>Assets.xcassets/AppIcon.appiconset</string>
     <key>CFBundleIconFile</key>
     <string>home.png</string>
+    <key>Icon Name</key>
+    <string>home</string>
+    <key>Icon files</key>
+    <array>
+      <string>Icon1024.png</string>
+      <string>Icon152.png</string>
+      <string>Icon167.png</string>
+      <string>Icon120.png</string>
+    </array>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>bluetooth-central</string>
+      <string>bluetooth-peripheral</string>
+    </array>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>App communicates with CoreBluetooth</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>App communicates with CoreBluetooth</string>
   </dict>
 </plist>
 

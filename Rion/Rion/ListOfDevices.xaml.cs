@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BACCommunicationAPI;
 using BACCommunicationAPI.Abstractions.BACDevice;
 using Xamarin.Forms;
@@ -12,11 +8,11 @@ using Xamarin.Forms.Xaml;
 namespace Rion
 {
    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ListOfDevices : ContentPage
+    public partial class ListOfDevices
     {
         private readonly IDeviceManipulationPage _page;
 
-        public ObservableCollection<IBacGenericDevice> Items { get; set; } = new ObservableCollection<IBacGenericDevice>(BacCommunication.CurrentRepository.BacDevices);
+        private ObservableCollection<IBacGenericDevice> Items { get; set; } = new ObservableCollection<IBacGenericDevice>(BacCommunication.CurrentRepository.BacDevices);
 
         public ListOfDevices(IDeviceManipulationPage page)
         {
@@ -29,7 +25,7 @@ namespace Rion
         /// Enable and Disable items based on Scanning State.
         /// Note: on iOS, the list doesn't always appear to be refreshing.
         /// </summary>
-        private void handleScanningState()
+        private void HandleScanningState()
         {
             MyListView.IsRefreshing = BacCommunication.CurrentRepository.IsBluetoothLeScanning;
             ScanButton.IsEnabled = !BacCommunication.CurrentRepository.IsBluetoothLeScanning;
@@ -52,7 +48,7 @@ namespace Rion
             BacCommunication.CurrentRepository.BluetoothLeScanningChange += CurrentRepository_BluetoothLeScanningChange;
 
             MyListView.ItemsSource = Items;
-            handleScanningState();
+            HandleScanningState();
         }
 
         /// <summary>
@@ -76,7 +72,7 @@ namespace Rion
         /// <param name="e"></param>
         private void CurrentRepository_BluetoothLeScanningChange(object sender, BACCommunicationAPI.Abstractions.BACDeviceRepository.ScanningBluetoothLEEventeArgs e)
         {
-            Device.BeginInvokeOnMainThread(handleScanningState);
+            Device.BeginInvokeOnMainThread(HandleScanningState);
         }
 
         /// <summary>
@@ -108,7 +104,7 @@ namespace Rion
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        private async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (e.Item == null || !(e.Item is IBacGenericDevice device))
                 return;
@@ -129,7 +125,7 @@ namespace Rion
             }
             catch (Exception ex)
             {
-                handleScanningState();
+                HandleScanningState();
                 await DisplayAlert("Error", "Exception starting scan: " + ex.Message, "Ok");
             }
         }
@@ -147,7 +143,7 @@ namespace Rion
             }
             catch (Exception ex)
             {
-                handleScanningState();
+                HandleScanningState();
                 await DisplayAlert("Error", "Exception starting scan: " + ex.Message, "Ok");
             }
         }

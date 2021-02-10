@@ -1,5 +1,4 @@
-﻿using System;
-using BACCommunicationAPI.Abstractions.BACDevice;
+﻿using BACCommunicationAPI.Abstractions.BACDevice;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

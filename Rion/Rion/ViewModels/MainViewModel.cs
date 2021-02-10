@@ -27,7 +27,6 @@ namespace Rion.ViewModels
 
         public MainViewModel(IPageService pageService)
         {
-            Console.WriteLine($"Local device is {App.LocalDevice}");
             ConnectedDevice = App.LocalDevice;
             _pageService = pageService;
             _model = new FeedViewModel();
@@ -40,21 +39,20 @@ namespace Rion.ViewModels
                 ConnectDeviceCommand = new Command(ConnectController);
                 ConnectedDeviceLabel = new LabelViewModel{LabelText = App.LocalDevice != null ? "Rion Thrust": "(Connect Device)"};
                 VoltageLabel = new LabelViewModel {LabelText = "0.0", LabelColor = Color.DimGray};
-                // SetupCommunications();
+                SetupCommunications();
             }
-            // HandleConnectionState();
+            HandleConnectionState();
         }
 
         private async void SwipeSettings()
         {
-            Console.WriteLine("Swipinggg!!");
             await _pageService.PushAsync(new ListOfDevices(this));
         }
 
         private void SetupCommunications()
         {
             BacCommunication.CurrentRepository.BluetoothLeScanningChange += CurrentRepository_BluetoothLeScanningChange;
-            Device.BeginInvokeOnMainThread(handleScanningChange);
+            Device.BeginInvokeOnMainThread(HandleScanningChange);
             StartAutoConnectionRoutine();
         }
 
@@ -108,7 +106,6 @@ namespace Rion.ViewModels
                     Model.Voltage = await ConnectedDevice.Read(265) / (double) 32;
                     VoltageLabel.LabelText = Model.Voltage.ToString("F0");
                     VoltageLabel.LabelColor = Color.Black;
-                    Console.WriteLine(VoltageLabel.LabelText);
                 }
                 catch (Exception exception)
                 {
@@ -191,7 +188,7 @@ namespace Rion.ViewModels
         /// <param name="e"></param>
         private void CurrentRepository_BluetoothLeScanningChange(object sender, BACCommunicationAPI.Abstractions.BACDeviceRepository.ScanningBluetoothLEEventeArgs e)
         {
-            Device.BeginInvokeOnMainThread(handleScanningChange);
+            Device.BeginInvokeOnMainThread(HandleScanningChange);
         }
 
         private void ConnectDevice()
@@ -213,16 +210,12 @@ namespace Rion.ViewModels
                 ConnectedDevice = null;
             }
 
-            Console.WriteLine($"list is: {List}");
-            while (ConnectedDevice == null)
+            while (ConnectedDevice == null && List.Count > 0)
             {
                 ConnectedDevice = await BacCommunication.CurrentRepository.StartBluetoothLeAutoConnection(List);
             }
-            Console.WriteLine($"Device isss: {ConnectedDevice}");
-
-            //do stuff with new device.
+            if (ConnectedDevice == null) return;
             App.LocalDevice = ConnectedDevice;
-            Console.WriteLine("Started auto connect and have a device readyyy!!");
             HandleConnectionState();
             SubscribeToConnectedDevice();
         }
@@ -230,7 +223,7 @@ namespace Rion.ViewModels
         /// <summary>
         /// Handle layout changes from scanning change
         /// </summary>
-        private void handleScanningChange()
+        private void HandleScanningChange()
         {
             Console.WriteLine("Handling scanning state");
         }
@@ -268,7 +261,6 @@ namespace Rion.ViewModels
             switch (ConnectedDevice.ConnectionState)
             {
                 case BACConnectionState.CONNECTED:
-                    Console.WriteLine("Running thisss");
                     ConnectButton.IsEnabled = false;
                     ConnectButton.TextColor = Color.LightGray;
                     ConnectedDeviceLabel.LabelText = "Rion Thrust";
