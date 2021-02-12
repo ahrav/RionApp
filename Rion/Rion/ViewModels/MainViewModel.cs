@@ -53,21 +53,48 @@ namespace Rion.ViewModels
         {
             BacCommunication.CurrentRepository.BluetoothLeScanningChange += CurrentRepository_BluetoothLeScanningChange;
             Device.BeginInvokeOnMainThread(HandleScanningChange);
+            ConnectDevice();
             StartAutoConnectionRoutine();
         }
 
         private async void ConnectController()
         {
-            if (!Application.Current.Properties.ContainsKey("device")) await _pageService.PushAsync(new ListOfDevices(this));
+            if (ConnectedDevice != null)
+            {
+                switch (ConnectedDevice.ConnectionState)
+                {
+                    case BACConnectionState.DISCONNECTED when !Application.Current.Properties.ContainsKey("device"):
+                        await _pageService.PushAsync(new ListOfDevices(this));
+                        break;
+                    case BACConnectionState.DISCONNECTED:
+                        StartAutoConnectionRoutine();
+                        break;
+                    case BACConnectionState.CONNECTED:
+                        await ConnectedDevice.Disconnect();
+                        List.Remove(Application.Current.Properties["device"].ToString());
+                        ConnectedDevice = null;
+                        break;
+                    case BACConnectionState.CONNECTING:
+                        break;
+                    case BACConnectionState.DISCONNECTING:
+                        break;
+                    case BACConnectionState.ERROR_STATE:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
             else
             {
-                StartAutoConnectionRoutine();
+                if (!Application.Current.Properties.ContainsKey("device")) await _pageService.PushAsync(new ListOfDevices(this));
+                SetupCommunications();
             }
+            
         }
         
         private async void ReadSpeed()
         {
-            if (ConnectedDevice == null)
+            if (ConnectedDevice == null || ConnectedDevice.ConnectionState == BACConnectionState.DISCONNECTED)
             {
                 Model.Speed = 0;
                 return;
@@ -91,7 +118,7 @@ namespace Rion.ViewModels
 
         private async void ReadVoltage()
         {
-            if (ConnectedDevice == null)
+            if (ConnectedDevice == null || ConnectedDevice.ConnectionState == BACConnectionState.DISCONNECTED)
             {
                 Model.Voltage = 0.0;
                 VoltageLabel.LabelText = "0.0";
@@ -112,7 +139,6 @@ namespace Rion.ViewModels
                     Console.WriteLine(exception);
                     Debug.WriteLine(exception);
                     UnsubscribeToDevice();
-                    HandleConnectionState();
                 }
 
             }
@@ -120,7 +146,7 @@ namespace Rion.ViewModels
 
         private async void ReadCurrent()
         {
-            if (ConnectedDevice == null)
+            if (ConnectedDevice == null || ConnectedDevice.ConnectionState == BACConnectionState.DISCONNECTED)
             {
                 Model.Amps = 0.0;
                 return;
@@ -137,14 +163,13 @@ namespace Rion.ViewModels
                     Console.WriteLine(exception);
                     Debug.WriteLine(exception);
                     UnsubscribeToDevice();
-                    HandleConnectionState();
                 }
             }
         }
 
         private async void ReadTemp()
         {
-            if (ConnectedDevice == null)
+            if (ConnectedDevice == null || ConnectedDevice.ConnectionState == BACConnectionState.DISCONNECTED)
             {
                 Model.Temp = 0.0;
                 return;
@@ -161,7 +186,6 @@ namespace Rion.ViewModels
                     Console.WriteLine(exception);
                     Debug.WriteLine(exception);
                     UnsubscribeToDevice();
-                    HandleConnectionState();
                 }
             }
         }
@@ -171,14 +195,21 @@ namespace Rion.ViewModels
         /// </summary>
         private void UnsubscribeToDevice()
         {
-            Model.Speed = 0;
-            Model.Amps = 0.0;
-            Model.Temp = 0.0;
-            Model.Voltage = 0.0;
-            VoltageLabel.LabelText = "";
-            ConnectedDeviceLabel.LabelText = "(Connect Device)";
-            if (ConnectedDevice == null) return;
-            ConnectedDevice.ConnectionStateChanged -= Device_ConnectionStateChanged;
+            Console.WriteLine("unsub!!");
+            // Model.Speed = 0;
+            // Model.Amps = 0.0;
+            // Model.Temp = 0.0;
+            // Model.Voltage = 0.0;
+            // VoltageLabel.LabelText = "";
+            // ConnectedDeviceLabel.LabelText = "(Connect Device)";
+            // ConnectButton.Text = "Connect";
+            // ConnectButton.IsEnabled = true;
+            // if (ConnectedDevice == null) return;
+            if (ConnectedDevice != null) ConnectedDevice.ConnectionStateChanged -= Device_ConnectionStateChanged;
+            else
+            {
+                HandleConnectionState();
+            }
         }
         
         /// <summary>
@@ -203,7 +234,6 @@ namespace Rion.ViewModels
         private async void StartAutoConnectionRoutine()
         {
             Console.WriteLine("Started auto connect !!");
-            ConnectDevice();
             if (ConnectedDevice != null)
             {
                 await ConnectedDevice.Disconnect();
@@ -247,6 +277,18 @@ namespace Rion.ViewModels
             Device.BeginInvokeOnMainThread(HandleConnectionState);
         }
 
+        private void Reset()
+        {
+            // Model.Speed = 0;
+            // Model.Voltage = 0.0;
+            // VoltageLabel.LabelText = "0.0";
+            // Model.Amps = 0.0;
+            // Model.Temp = 0.0;
+            ConnectedDeviceLabel.LabelText = "(Connect Device)";
+            ConnectButton.Text = "Connect";
+            ConnectButton.IsEnabled = true;
+        }
+
         /// <summary>
         /// Adjust layout based on connection state
         /// </summary>
@@ -256,23 +298,33 @@ namespace Rion.ViewModels
             ReadVoltage();
             ReadCurrent();
             ReadTemp();
-            if (ConnectedDevice == null) return;
+            if (ConnectedDevice == null)
+            {
+                Reset();
+                return;
+            }
 
             switch (ConnectedDevice.ConnectionState)
             {
                 case BACConnectionState.CONNECTED:
-                    ConnectButton.IsEnabled = false;
-                    ConnectButton.TextColor = Color.LightGray;
+                    ConnectButton.IsEnabled = true;
+                    ConnectButton.Text = "Disconnect";
                     ConnectedDeviceLabel.LabelText = "Rion Thrust";
+                    Console.WriteLine($"run connected? {ConnectButton.Text} {ConnectButton.IsEnabled}");
                     break;
                 case BACConnectionState.CONNECTING:
                     ConnectButton.IsEnabled = false;
                     ConnectButton.TextColor = Color.LightGray;
                     break;
                 case BACConnectionState.DISCONNECTED:
-                    Console.WriteLine("Disconnected!!!!!");
-                    StartAutoConnectionRoutine();
-                    ConnectButton.IsEnabled = true;
+                    if (List.Count > 0) StartAutoConnectionRoutine();
+                    else
+                    {
+                        ConnectedDeviceLabel.LabelText = "(Connect Device)";
+                        ConnectButton.Text = "Connect";
+                        ConnectButton.IsEnabled = true;
+                    }
+                    Console.WriteLine($"run disconnected? {ConnectButton.Text} {ConnectButton.IsEnabled}");
                     break;
                 case BACConnectionState.DISCONNECTING:
                     ConnectButton.IsEnabled = false;

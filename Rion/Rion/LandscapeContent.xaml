@@ -363,7 +363,7 @@
                     Grid.Column="1"
                     FontSize="16"
                     TextColor="White"
-                    Text="Connect"
+                    Text="{Binding ConnectButton.Text}"
                     IsEnabled="{Binding ConnectButton.IsEnabled}"
                     Command="{Binding ConnectDeviceCommand}"
                     />

@@ -2,9 +2,19 @@ namespace Rion.ViewModels
 {
     public class ButtonViewModel : BaseViewModel
     {
-        public string Text { get; set; }
+        private string _text;
         private bool _isEnabled;
         private Xamarin.Forms.Color _textColor;
+
+        public string Text
+        {
+            get => _text;
+            set
+            {
+                SetValue(ref _text, value);
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsEnabled
         {
