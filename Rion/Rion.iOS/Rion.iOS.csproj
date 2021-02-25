@@ -120,6 +120,7 @@
         <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="18.4.0.39" />
         <PackageReference Include="Syncfusion.Xamarin.Core" Version="18.4.0.39" />
         <PackageReference Include="Syncfusion.Xamarin.SfGauge" Version="18.4.0.39" />
+        <PackageReference Include="Syncfusion.Xamarin.SfTabView" Version="18.4.0.39" />
         <PackageReference Include="Xamarin.Forms" Version="5.0.0.1931" />
     </ItemGroup>
     <ItemGroup>
