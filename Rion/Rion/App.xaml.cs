@@ -13,9 +13,16 @@ namespace Rion
             InitializeComponent();
 
             MainPage = new NavigationPage(new MainPage());
+            if (!Current.Properties.ContainsKey("lifetimeSpeed")) LifetimeSpeed = 0;
         }
         
         public static IBacGenericDevice LocalDevice { get; set; }
+
+        public static double LifetimeSpeed
+        {
+            get => (double) Current.Properties["lifetimeSpeed"];
+            set => Current.Properties["lifetimeSpeed"] = value;
+        }
 
         protected override void OnStart()
         {

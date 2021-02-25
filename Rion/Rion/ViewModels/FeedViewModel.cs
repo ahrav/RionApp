@@ -4,12 +4,12 @@ namespace Rion.ViewModels
 {
     public class FeedViewModel : BaseViewModel
     {
-        private int _speed = 0;
+        private double _speed = 0;
         private double _voltage = 00.0;
         private double _amps = 0.0;
         private double _temp = 0.0;
 
-        public int Speed
+        public double Speed
         {
             get => _speed;
             set

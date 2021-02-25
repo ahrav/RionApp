@@ -3,18 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:gauge="clr-namespace:Syncfusion.SfGauge.XForms;assembly=Syncfusion.SfGauge.XForms"
+             xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
              x:Class="Rion.PortraitContent"
              ios:Page.UseSafeArea="True"
-             Padding="15, 0, 15, 15"
+             Padding="5, 0, 5, 15"
              BackgroundColor="black">
     
-    <ContentView.GestureRecognizers>
-        <SwipeGestureRecognizer Direction="Left" Command="{Binding SwipeCommand}" />
-    </ContentView.GestureRecognizers>
-    <Grid RowSpacing="5">
+    <tabView:SfTabView TabHeaderPosition="Bottom"
+                       VisibleHeaderCount="3">
+        <tabView:SfTabView.SelectionIndicatorSettings>
+            <tabView:SelectionIndicatorSettings Color="#ffa500"
+                                                Position="Bottom"/>
+        </tabView:SfTabView.SelectionIndicatorSettings>
+        <tabView:SfTabItem Title="Realtime"
+                           TitleFontColor="White"
+                           SelectionColor="#cfb53b">
+            <tabView:SfTabItem.Content>
+                <Grid RowSpacing="5">
         <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
-                        <RowDefinition Height="9*"/>
+                        <RowDefinition Height="7*"/>
                         <RowDefinition Height="4.25*"/>
                         <RowDefinition Height="2.75*"/>
                         <RowDefinition Height=".5*"/>
@@ -359,4 +367,72 @@
                             Command="{Binding ConnectDeviceCommand}"
                             />
                 </Grid>
+            </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+            <tabView:SfTabItem Title="Stats"
+                               TitleFontColor="White"
+                               SelectionColor="#cfb53b">
+            <tabView:SfTabItem.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Row="0"
+                                 Grid.Column="0"
+                                 VerticalOptions="Center">
+                        <Label Text="All-time Top Speed"
+                               HorizontalOptions="CenterAndExpand"
+                               TextColor="White"/>
+                        <Label Text="{Binding Stats.LifetimeSpeed}"
+                               TextColor="White"
+                               HorizontalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                    <StackLayout Grid.Row="0"
+                                 Grid.Column="1"
+                                 VerticalOptions="Center">
+                        <Label Text="All-time Distance"
+                               HorizontalOptions="CenterAndExpand"
+                               TextColor="White"/>
+                        <Label Text="{Binding Stats.LifetimeDistance}"
+                               TextColor="White"
+                               HorizontalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1"
+                                 Grid.Column="0"
+                                 VerticalOptions="Center">
+                        <Label Text="Session Top Speed"
+                               HorizontalOptions="CenterAndExpand"
+                               TextColor="White"/>
+                        <Label Text="{Binding Stats.SessionSpeed}"
+                               TextColor="White"
+                               HorizontalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1"
+                                 Grid.Column="1"
+                                 VerticalOptions="Center">
+                        <Label Text="Session Distance"
+                               HorizontalOptions="CenterAndExpand"
+                               TextColor="White"/>
+                        <Label Text="{Binding Stats.SessionDistance}"
+                               TextColor="White"
+                               HorizontalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </Grid>
+            </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+        <tabView:SfTabItem Title="Settings"
+                           TitleFontColor="White"
+                           SelectionColor="#cfb53b">
+            <tabView:SfTabItem.Content>
+                
+            </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+    </tabView:SfTabView>
 </ContentView>

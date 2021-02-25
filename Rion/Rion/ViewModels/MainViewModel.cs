@@ -19,7 +19,10 @@ namespace Rion.ViewModels
         public LabelViewModel VoltageLabel { get; private set; }
         private const int WheelSize = 11;
         private readonly FeedViewModel _model;
+        private readonly StatsViewModel _stats;
         public FeedViewModel Model => _model;
+
+        public StatsViewModel Stats => _stats;
         
         public ICommand ConnectDeviceCommand { get; private set; }
         
@@ -30,7 +33,7 @@ namespace Rion.ViewModels
             ConnectedDevice = App.LocalDevice;
             _pageService = pageService;
             _model = new FeedViewModel();
-            SwipeComand = new Command(SwipeSettings);
+            _stats = new StatsViewModel();
             
             
             if (App.LocalDevice == null)
@@ -42,11 +45,6 @@ namespace Rion.ViewModels
                 SetupCommunications();
             }
             HandleConnectionState();
-        }
-
-        private async void SwipeSettings()
-        {
-            await _pageService.PushAsync(new ListOfDevices(this));
         }
 
         private void SetupCommunications()
@@ -103,13 +101,18 @@ namespace Rion.ViewModels
             {
                 try
                 {
-                    var rpm = await ConnectedDevice.Read(263);
-                    Model.Speed = (rpm * WheelSize) / 336;
+                    var speed = Math.Round(await ConnectedDevice.Read(260) / (float) 256 /1.609344, 0);
+                    Model.Speed = speed;
+                    if (speed > App.LifetimeSpeed)
+                    {
+                        Stats.LifetimeSpeed = speed;
+                        App.LifetimeSpeed = speed;
+                    }
+                    if (speed > Stats.SessionSpeed) Stats.SessionSpeed = speed;
                 }
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
-                    Debug.WriteLine(exception);
                     UnsubscribeToDevice();
                     HandleConnectionState();
                 }
@@ -137,7 +140,6 @@ namespace Rion.ViewModels
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
-                    Debug.WriteLine(exception);
                     UnsubscribeToDevice();
                 }
 
@@ -161,7 +163,6 @@ namespace Rion.ViewModels
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
-                    Debug.WriteLine(exception);
                     UnsubscribeToDevice();
                 }
             }
@@ -184,7 +185,6 @@ namespace Rion.ViewModels
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
-                    Debug.WriteLine(exception);
                     UnsubscribeToDevice();
                 }
             }
@@ -243,6 +243,38 @@ namespace Rion.ViewModels
             while (ConnectedDevice == null && List.Count > 0)
             {
                 ConnectedDevice = await BacCommunication.CurrentRepository.StartBluetoothLeAutoConnection(List);
+                if (ConnectedDevice != null)
+                {
+                    var wheelDiameter = await ConnectedDevice.Read(227);
+                    if (Math.Abs(wheelDiameter - 279.4) > 0.1)
+                    {
+                        try
+                        {
+                            await ConnectedDevice.Write(227, (short) 279.4);
+                        }
+                        catch (Exception exception)
+                        {
+                            Console.WriteLine(exception);
+                            UnsubscribeToDevice();
+                            HandleConnectionState();
+                        }
+                    }
+
+                    var gearRatio = await ConnectedDevice.Read(226) / 256;
+                    if (gearRatio != 1)
+                    {
+                        try
+                        {
+                            await ConnectedDevice.Write(226, 1);
+                        }
+                        catch (Exception exception)
+                        {
+                            Console.WriteLine(exception);
+                            UnsubscribeToDevice();
+                            HandleConnectionState();
+                        }
+                    }
+                }
             }
             if (ConnectedDevice == null) return;
             App.LocalDevice = ConnectedDevice;
